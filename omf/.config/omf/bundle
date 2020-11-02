@@ -1,0 +1,5 @@
+package archlinux
+package https://github.com/dracula/fish
+theme agnoster
+theme bobthefish
+theme default
