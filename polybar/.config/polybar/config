@@ -63,7 +63,7 @@ font-5 = Font Awesome 5 Brands:pixelsize=12;2
 
 modules-left = i3
 modules-center = spotify
-modules-right = xbacklight pulseaudio pacman-updates wlan battery date powermenu
+modules-right = xbacklight pulseaudio pacman-updates info-hackspeed wlan battery date powermenu
 
 ;separator = |
 
@@ -106,6 +106,12 @@ label-indicator-margin = 1
 label-indicator-background = ${colors.secondary}
 label-indicator-underline = ${colors.secondary}
 
+[module/info-hackspeed]
+type = custom/script
+exec = ~/.config/polybar/scripts/info-hackspeed.sh
+tail = true
+format-underline = #ff5555
+
 [module/filesystem]
 type = internal/fs
 interval = 25
@@ -145,12 +151,12 @@ index-sort = true
 wrapping-scroll = false
 
 ;workspace icons
-ws-icon-0 = 1;
-ws-icon-1 = 2;
+ws-icon-0 = 1;
+ws-icon-1 = 2;
 ws-icon-2 = 3;
 ws-icon-3 = 4;
-ws-icon-4 = 5;
-ws-icon-5 = 6;
+ws-icon-4 = 5;5
+ws-icon-5 = 6;6
 ws-icon-6 = 7;7
 ws-icon-7 = 8;8
 ws-icon-8 = 9;9
@@ -206,7 +212,7 @@ type = custom/script
 interval = 1
 format-prefix = " "
 format = <label>
-exec = python ~/.config/polybar/spotify_status.py -f '{artist}: {song}'
+exec = python ~/.config/polybar/scripts/spotify_status.py -f '{artist}: {song}'
 format-underline = #50FA7B
 
 [module/pacman-updates]
@@ -214,7 +220,7 @@ type = custom/script
 exec = checkupdates | wc -l
 interval = 1000
 label = %output%
-format.foreground = ${colors.foreground}
+format-foreground = ${colors.foreground}
 format-prefix = " "
 format-prefix-foreground = ${colors.foreground}
 format-underline = #F1FA8C
@@ -235,6 +241,12 @@ bar-fill-foreground = #9f78e1
 bar-empty = ─
 bar-empty-font = 2
 bar-empty-foreground = ${colors.foreground-alt}
+
+ramp-0 = 🌕
+ramp-1 = 🌔
+ramp-2 = 🌓
+ramp-3 = 🌒
+ramp-4 = 🌑
 
 [module/backlight-acpi]
 inherit = module/xbacklight
@@ -375,30 +387,39 @@ full-at = 98
 
 format-charging = <animation-charging> <label-charging>
 format-charging-underline = #FF79C6
+label-charging = %percentage%%
 
 format-discharging = <animation-discharging> <label-discharging>
 format-discharging-underline = ${self.format-charging-underline}
+label-discharging = %percentage%%
 
-format-full-prefix = " "
-format-full-prefix-foreground = ${colors.foreground-alt}
+format-full-prefix = " "
+format-full-prefix-foreground = ${colors.foreground}
 format-full-underline = ${self.format-charging-underline}
+label-full = %percentage%%
 
-ramp-capacity-0 = 
-ramp-capacity-1 = 
-ramp-capacity-2 = 
-ramp-capacity-foreground = ${colors.foreground-alt}
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+ramp-capacity-foreground = ${colors.foreground}
 
-animation-charging-0 = 
-animation-charging-1 = 
-animation-charging-2 = 
-animation-charging-foreground = ${colors.foreground-alt}
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 = 
+animation-charging-foreground = ${colors.foreground}
 animation-charging-framerate = 750
 
-animation-discharging-0 = 
-animation-discharging-1 = 
-animation-discharging-2 = 
-animation-discharging-foreground = ${colors.foreground-alt}
-animation-discharging-framerate = 750
+animation-discharging-0 = 
+animation-discharging-1 = 
+animation-discharging-2 = 
+animation-discharging-3 = 
+animation-discharging-4 = 
+animation-discharging-foreground = ${colors.foreground}
+animation-discharging-framerate = 500
 
 [module/temperature]
 type = internal/temperature
@@ -419,6 +440,11 @@ ramp-1 = 
 ramp-2 = 
 ramp-foreground = ${colors.foreground-alt}
 
+[module/info-airqualityindex]
+type = custom/script
+exec = ~/.config/polybar/scripts/info-airqualityindex.sh
+interval = 600
+
 [module/powermenu]
 type = custom/menu
 
@@ -426,7 +452,7 @@ expand-right = true
 
 format-spacing = 1
 
-label-open = 
+label-open = 
 label-open-foreground = ${colors.secondary}
 label-close =  cancel
 label-close-foreground = ${colors.secondary}
