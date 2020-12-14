@@ -19,19 +19,27 @@ Plugin 'tpope/vim-fugitive'
 " Git plugin not hosted on GitHub
 Plugin 'git://git.wincent.com/command-t.git'
 " git repos on your local machine (i.e. when working on your own plugin)
+" Plugin 'file:///home/gmarik/path/to/plugin'
+" The sparkup vim script is in a subdirectory of this repo called vim.
+" Pass the path to set the runtimepath properly.
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 " Install L9 and avoid a Naming conflict if you've already installed a
 " different version somewhere else.
 " Plugin 'ascenator/L9', {'name': 'newL9'}
 
-" Airline
+" Preview colors in source code while editing
+Plugin 'ap/vim-css-color'
+
+" Dracula theme
+Plugin 'dracula/vim', { 'name': 'dracula' }
+
+"Airline
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
 " YouCompleteMe
 Plugin 'ycm-core/YouCompleteMe'
-" Dracula Color Scheme
-Plugin 'dracula/vim', { 'name': 'dracula' }
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -61,7 +69,7 @@ set noswapfile
 set incsearch
 
 colorscheme dracula
-"set background=dark
+set background=dark
 let g:airline_powerline_fonts = 1
 
 " Background transparency

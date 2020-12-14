@@ -1,7 +1,7 @@
 #!/bin/sh
 
-TOKEN=""
-CITY=""
+TOKEN="8c50fc7aa3cfc4e2b2f2adfef4427510d4f0fa60"
+CITY="Nashik"
 
 API="https://api.waqi.info/feed"
 
@@ -23,17 +23,17 @@ if [ -n "$aqi" ]; then
         aqi=$(echo "$aqi" | jq '.data.aqi')
 
         if [ "$aqi" -lt 50 ]; then
-            echo "%{F#009966}#%{F-} $aqi"
+            echo "%{F#009966}%{F-} $aqi"
         elif [ "$aqi" -lt 100 ]; then
-            echo "%{F#ffde33}#%{F-} $aqi"
+            echo "%{F#ffde33}%{F-} $aqi"
         elif [ "$aqi" -lt 150 ]; then
-            echo "%{F#ff9933}#%{F-} $aqi"
+            echo "%{F#ff9933}%{F-} $aqi"
         elif [ "$aqi" -lt 200 ]; then
-            echo "%{F#cc0033}#%{F-} $aqi"
+            echo "%{F#cc0033}%{F-} $aqi"
         elif [ "$aqi" -lt 300 ]; then
-            echo "%{F#660099}#%{F-} $aqi"
+            echo "%{F#660099}%{F-} $aqi"
         else
-            echo "%{F#7e0023}#%{F-} $aqi"
+            echo "%{F#7e0023}%{F-} $aqi"
         fi
     else
         echo "$aqi" | jq -r '.data'

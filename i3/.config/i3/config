@@ -13,7 +13,7 @@ set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:Source Code Pro 10
+font pango:Mononoki Nerd Font 10
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -115,17 +115,17 @@ bindsym $mod+a focus parent
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-#set $ws1 "1: "
+#set $ws1 ""
 set $ws1 "1"
-#set $ws2 "2: "
+#set $ws2 ""
 set $ws2 "2"
-#set $ws3 "3: "
+#set $ws3 ""
 set $ws3 "3"
-#set $ws4 "4: "
+#set $ws4 ""
 set $ws4 "4"
-#set $ws5 "5: "
+#set $ws5 ""
 set $ws5 "5"
-#set $ws6 "6: "
+#set $ws6 ""
 set $ws6 "6"
 set $ws7 "7"
 set $ws8 "8"
@@ -159,11 +159,13 @@ bindsym $mod+Shift+0 move container to workspace number $ws10
 # Assign programs to workspaces
 assign [class="Alacritty"] $ws1
 assign [class="firefox"] $ws2
+assign [class="Brave-browser"] $ws2
+assign [class="qutebrowser"] $ws2
 assign [class="Atom"] $ws3
 # Spotify has a bug
 for_window [class="Spotify"] move to workspace $ws4
-assign [class="Steam"] $ws5
-assign [class="discord"] $ws6
+#assign [class="Steam"] $ws5
+#assign [class="discord"] $ws6
 
 
 # reload the configuration file
@@ -204,8 +206,8 @@ bindsym $mod+r mode "resize"
 for_window [class="^.*"] border pixel 2
 
 # Set inner/outer gaps
-gaps inner 10
-gaps outer 15
+gaps inner 5
+gaps outer 10
 
 # Additionally, you can issue commands with the following syntax. This is useful to bind keys to changing the gap size.
 # gaps inner|outer current|all set|plus|minus <px>
@@ -295,17 +297,20 @@ exec_always feh --bg-fill ~/Pictures/arch.png
 # betterlockscreen(aur)
 bindsym $mod+Shift+x exec betterlockscreen -u ~/Pictures/arch.png -l dimblur
 
-# Window compositor
-exec_always picom -f
+# Window compositor - picom-jonaburg-git (aur)
+exec_always picom --experimental-backend -f 
 
 # Shutdown menu (i3blocks)
 bindsym Control+$mod+Delete exec ~/.config/i3blocks/scripts/shutdown_menu
 
 # Blueman (bluetooth tray)
-exec_always blueman-tray
+#exec_always blueman-tray
 
 # Run notification daemon (Dunst)
 exec_always dunst
+
+# For polybar pop-up calendar module
+for_window [class="Yad" title="yad-calendar"] floating enable
 
 # Polybar launch script
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh

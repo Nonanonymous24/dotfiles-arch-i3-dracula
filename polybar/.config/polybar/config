@@ -19,9 +19,11 @@
 [colors]
 ;background = ${xrdb:color0:#222}
 ;background = #222
-background = #E6282A36
+;background = #E6282A36
+background = #282A36
+;background = #00282A36
 ;background-alt = #444
-background-alt = #FF282A36
+background-alt = #282A36
 ;foreground = ${xrdb:color7:#222}
 foreground = #dfdfdf
 foreground-alt = #555
@@ -31,6 +33,7 @@ secondary = #e60053
 alert = #bd2c40
 
 [bar/example]
+enable-ipc = true 
 ;monitor = ${env:MONITOR:HDMI-1}
 width = 100%
 height = 27
@@ -54,7 +57,7 @@ padding-right = 1
 module-margin-left = 1
 module-margin-right = 2
 
-font-0 = fixed:pixelsize=10;1
+font-0 = Roboto Condensed:pixelsize=10;1
 font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
 font-2 = siji:pixelsize=10;1
 font-3 = Font Awesome 5 Free:pixelsize=12;2
@@ -62,8 +65,8 @@ font-4 = Font Awesome 5 Free Solid:pixelsize=12;2
 font-5 = Font Awesome 5 Brands:pixelsize=12;2
 
 modules-left = i3
-modules-center = spotify
-modules-right = xbacklight pulseaudio pacman-updates info-hackspeed wlan battery date powermenu
+modules-center = spotify previous playpause next
+modules-right = pulseaudio-control pacman-updates info-airqualityindex temperature date eth powermenu
 
 ;separator = |
 
@@ -95,11 +98,11 @@ blacklist-0 = num lock
 
 ;format-prefix = " "
 format-prefix = " "
-format-prefix-foreground = ${colors.foreground-alt}
-format-prefix-underline = ${colors.secondary}
+format-prefix-foreground = ${colors.foreground}
+format-prefix-underline = #ff5555
 
 label-layout = %layout%
-label-layout-underline = ${colors.secondary}
+label-layout-underline = #ff5555
 
 label-indicator-padding = 2
 label-indicator-margin = 1
@@ -153,7 +156,7 @@ wrapping-scroll = false
 ;workspace icons
 ws-icon-0 = 1;
 ws-icon-1 = 2;
-ws-icon-2 = 3;
+ws-icon-2 = 3;
 ws-icon-3 = 4;
 ws-icon-4 = 5;5
 ws-icon-5 = 6;6
@@ -172,7 +175,7 @@ label-mode-background = ${colors.primary}
 ; focused = Active workspace on focused monitor
 label-focused = %icon%
 label-focused-background = ${colors.background-alt}
-label-focused-underline= ${colors.primary}
+label-focused-underline = #bd93f9
 label-focused-padding = 2
 
 ; unfocused = Inactive workspace on any monitor
@@ -207,13 +210,42 @@ icon-next = 
 label-song-maxlen = 25
 label-song-ellipsis = true
 
+[module/previous]
+type = custom/ipc
+format-font = 2
+;Default
+hook-0 = echo ""
+; When spotify active
+hook-1 = echo ""
+click-left = "spotifyctl -q previous"
+
+[module/next]
+type = custom/ipc
+format-font = 2
+; Default
+hook-0 = echo ""
+; When spotify active
+hook-1 = echo ""
+click-left = "spotifyctl -q next"
+
+[module/playpause]
+type = custom/ipc
+format-font = 2
+; Default
+hook-0 = echo ""
+; Playing
+hook-1 = echo ""
+; Paused
+hook-2 = echo ""
+click-left = "spotifyctl -q playpause"
+
 [module/spotify]
-type = custom/script
-interval = 1
-format-prefix = " "
-format = <label>
-exec = python ~/.config/polybar/scripts/spotify_status.py -f '{artist}: {song}'
-format-underline = #50FA7B
+type = custom/ipc
+; Default
+hook-0 = echo ""
+; Playing/paused show song name and artist
+hook-1 = spotifyctl -q status --format ' %artist%: %title%'
+format-underline = #50fa7b
 
 [module/pacman-updates]
 type = custom/script
@@ -252,6 +284,25 @@ ramp-4 = 🌑
 inherit = module/xbacklight
 type = internal/backlight
 card = intel_backlight
+
+[module/backlight]
+type = internal/backlight
+
+; Use the following command to list available cards:
+; $ ls -1 /sys/class/backlight/
+card = intel_backlight
+
+; Enable changing the backlight with the scroll wheel
+; NOTE: This may require additional configuration on some systems. Polybar will
+; write to `/sys/class/backlight/${self.card}/brightness` which requires polybar
+; to have write access to that file.
+; DO NOT RUN POLYBAR AS ROOT. 
+; The recommended way is to add the user to the
+; `video` group and give that group write-privileges for the `brightness` file.
+; See the ArchWiki for more information:
+; https://wiki.archlinux.org/index.php/Backlight#ACPI
+; Default: false
+enable-scroll = true
 
 [module/cpu]
 type = internal/cpu
@@ -293,12 +344,12 @@ ramp-signal-foreground = #BD93F9
 
 [module/eth]
 type = internal/network
-interface = enp1s0
+interface = enp3s0
 interval = 3.0
 
-format-connected-underline = #55aa55
-format-connected-prefix = " "
-format-connected-prefix-foreground = ${colors.foreground-alt}
+format-connected-underline = #44475a
+;format-connected-prefix = " "
+format-connected-prefix-foreground = ${colors.foreground}
 label-connected = %local_ip%
 
 format-disconnected =
@@ -317,11 +368,18 @@ date-alt = " %B %d, %Y"
 time = %I:%M %p
 time-alt = %I:%M:%S %p
 
-format-prefix = 
-format-prefix-foreground = ${colors.foreground-alt}
+format-prefix = 
+format-prefix-foreground = ${colors.foreground}
 format-underline = #FFB86C
 
 label = %date% %time%
+
+[module/popup-calendar]
+type = custom/script
+exec = ~/.config/polybar/scripts/popup-calendar.sh
+interval = 5
+click-left = ~/.config/polybar/scripts/popup-calendar.sh --popup &
+format-underline = #FFB86C
 
 [module/pulseaudio]
 type = internal/pulseaudio
@@ -379,6 +437,24 @@ bar-volume-empty = ─
 bar-volume-empty-font = 2
 bar-volume-empty-foreground = ${colors.foreground-alt}
 
+[module/pulseaudio-control]
+type = custom/script
+tail = true
+format-underline = #8be9fd
+label-padding = 2
+label-foreground = ${colors.foreground}
+
+# Icons mixed from Font Awesome 5 and Material Icons
+# You can copy-paste your options for each possible action, which is more
+# trouble-free but repetitive, or apply only the relevant ones (for example
+# --sink-blacklist is only needed for next-sink).
+exec = pulseaudio-control --icons-volume " , " --icon-muted " " --sink-nicknames-from "device.description" --sink-nickname "alsa_output.pci-0000_00_1b.0.analog-stereo:  Speakers" --sink-nickname "alsa_output.usb-Kingston_HyperX_Virtual_Surround_Sound_00000000-00.analog-stereo:  Headphones" listen
+click-right = exec pavucontrol &
+click-left = pulseaudio-control togmute
+click-middle = pulseaudio-control --sink-blacklist "alsa_output.pci-0000_01_00.1.hdmi-stereo-extra2" next-sink
+scroll-up = pulseaudio-control --volume-max 130 up
+scroll-down = pulseaudio-control --volume-max 130 down
+
 [module/battery]
 type = internal/battery
 battery = BAT1
@@ -427,7 +503,7 @@ thermal-zone = 0
 warn-temperature = 60
 
 format = <ramp> <label>
-format-underline = #f50a4d
+format-underline = #ff79c6
 format-warn = <ramp> <label-warn>
 format-warn-underline = ${self.format-underline}
 
@@ -438,12 +514,13 @@ label-warn-foreground = ${colors.secondary}
 ramp-0 = 
 ramp-1 = 
 ramp-2 = 
-ramp-foreground = ${colors.foreground-alt}
+ramp-foreground = ${colors.foreground}
 
 [module/info-airqualityindex]
 type = custom/script
 exec = ~/.config/polybar/scripts/info-airqualityindex.sh
 interval = 600
+format-underline = #50fa7b
 
 [module/powermenu]
 type = custom/menu
