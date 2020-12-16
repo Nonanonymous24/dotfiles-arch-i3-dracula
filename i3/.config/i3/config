@@ -288,14 +288,30 @@ client.background       #F8F8F2
 #        #status_command i3blocks -c ~/.config/i3blocks/i3blocks.conf
 #}
 
+# For i3status-rust
+#bar {
+#    font pango:Mononoki Nerd Font, FontAwesome 10
+#    position top
+#    status_command i3status-rs ~/.config/i3status-rust/config.toml
+#    colors {
+#        separator #44475A
+#        background #282A36
+#        statusline #F8F8F2
+#        focused_workspace #44475A #44475A #F8F8F2
+#        active_workspace #282A36 #44475A #F8F8F2
+#        inactive_workspace #282A36 #282A36 #BFBFBF
+#        urgent_workspace #FF5555 #FF5555 #F8F8F2
+#    }
+#}
+
 # Keyboard Layout
 #
 
 # Wallpaper
 exec_always feh --bg-fill ~/Pictures/arch.png
 
-# betterlockscreen(aur)
-bindsym $mod+Shift+x exec betterlockscreen -u ~/Pictures/arch.png -l dimblur
+# betterlockscreen(git repo)
+bindsym $mod+Shift+x exec ~/betterlockscreen-12hr/./betterlockscreen -u ~/Pictures/arch.png -l dimblur
 
 # Window compositor - picom-jonaburg-git (aur)
 exec_always picom --experimental-backend -f 
